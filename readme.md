@@ -1,3 +1,45 @@
+
+# go-zero annotated-v1.0.25:
+
+- 本 fork 是 go-zero 源码阅读+注解分支. (已设置默认分支)
+- 并无任何修改, 仅做学习参考. 
+- 会更新阅读注解(中文).
+- 所有新增注解, 注释格式: `// todo x: some comments`
+- 使用 `todo x:` 标记头, 方便 IDE TODO 插件快捷找到, 快速阅读. `x` 标识, 这不是原本的 `TODO`
+
+## 阅读笔记: 
+
+- 新增 [FAQ.MD](./faq.md) 记录所有阅读笔记. 
+
+
+
+```bash
+
+git checkout annotated-v1.0.25
+
+
+```
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+
 <img align="right" width="150px" src="doc/images/go-zero.png">
 
 # go-zero
