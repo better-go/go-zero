@@ -133,6 +133,14 @@ goctl api new greet
 - 基于 go.14 官方 shutdown() 实现
 
 
+#### ServiceGroup.Start():
+
+- 关于 graceful shutdown 实现. 很清真的实现
+- init() 导包的时候, go 一个 后台 routine, 监听 os.signal 退出信号. 
+- 统一管理 http server / grpc server 的退出过程. 
+- 非常清真. 业务侧非常干净, 无感知. 
+
+
 ## ref:
 
 ### zrpc: 
