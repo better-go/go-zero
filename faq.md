@@ -141,6 +141,26 @@ goctl api new greet
 - 非常清真. 业务侧非常干净, 无感知. 
 
 
+```bash
+
+
+StartHttp() 里 gracefulOnShutdown() 实现. 
+
+在 signal 里, 是在 init() 里. go 了一个 routine. 
+
+也就是说, go main() 导包, 之后, 就在 后台开了一个 routine, 监听 os.signal. 
+
+这样在容器中, 进程退出时.  这个 routine, 就会 call  gracefulStop() 通知 前台的 http server 退出.
+
+http server 是在 start() 的时候, 把  srv.shutdown() 方法 植入 到 listenerManager 全局变量里. 
+
+2个 routine 通过这个全局变量. 实现通信? 最终配合完成  http server 进程退出.
+
+实现方式很干净.
+
+```
+
+
 ## ref:
 
 ### zrpc: 
