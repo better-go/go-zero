@@ -161,6 +161,18 @@ http server 是在 start() 的时候, 把  srv.shutdown() 方法 植入 到 list
 ```
 
 
+## 可以改进的地方: 
+
+- 可以把框架, 拆成2部分. 核心框架和 plugin 库. 
+- 包命名: 
+    - sysx 扩展包, 可以都放在 x/sys 这种方式. 
+    - 类似 google 官方的 x/tools x/crypto, x/text 等目录风格. 
+
+- 友好迁移过程: 
+    - 实现全部移到 x/sys 下, 原路径的文件, 暂时保留, 加入 @deprecated 提示, 提醒用户迁移. 
+
+
+
 ## ref:
 
 ### zrpc: 
