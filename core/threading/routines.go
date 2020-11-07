@@ -9,6 +9,9 @@ import (
 )
 
 func GoSafe(fn func()) {
+	//
+	// todo x: 很多人都写过类似实现. 啊哈哈...
+	//
 	go RunSafe(fn)
 }
 
@@ -24,8 +27,16 @@ func RoutineId() uint64 {
 	return n
 }
 
+
+//
+// todo x: 打印错误栈
+//
 func RunSafe(fn func()) {
 	defer rescue.Recover()
 
+
+	//
+	// todo x: call fn()
+	//
 	fn()
 }

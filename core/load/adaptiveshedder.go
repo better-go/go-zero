@@ -71,6 +71,9 @@ func Disable() {
 	enabled.Set(false)
 }
 
+//
+// todo x:
+//
 func NewAdaptiveShedder(opts ...ShedderOption) Shedder {
 	if !enabled.True() {
 		return newNopShedder()

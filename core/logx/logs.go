@@ -199,6 +199,9 @@ func ErrorCallerf(callDepth int, format string, v ...interface{}) {
 	errorSync(fmt.Sprintf(format, v...), callDepth+callerInnerDepth)
 }
 
+//
+// todo x: 打印出错栈
+//
 func ErrorStack(v ...interface{}) {
 	// there is newline in stack string
 	stackSync(fmt.Sprint(v...))

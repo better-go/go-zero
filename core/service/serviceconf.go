@@ -38,7 +38,11 @@ func (sc ServiceConf) SetUp() error {
 		return err
 	}
 
+	// todo x: 开发环境下, 禁用选型
 	sc.initMode()
+
+	// todo x: 集成 prometheus http agent
+	//		- 暴露一个 http 端口
 	prometheus.StartAgent(sc.Prometheus)
 	if len(sc.MetricsUrl) > 0 {
 		stat.SetReportWriter(stat.NewRemoteWriter(sc.MetricsUrl))

@@ -5,6 +5,10 @@ import "net/http"
 type (
 	Middleware func(next http.HandlerFunc) http.HandlerFunc
 
+
+	//
+	// todo: 路由表定义
+	//
 	Route struct {
 		Method  string
 		Path    string

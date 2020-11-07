@@ -61,14 +61,58 @@ goctl api new greet
 - 根据提示 run 项目. curl api, 确定一切正常. 
 - 开始分析源码.
 
-## 项目入口:
 
 
-- 
+### 2. 示例 阅读: 
+
+- 通过阅读 [./tmp/greet](./tmp/greet), 找到框架总纲. 
+
+
+### 3. 框架源码分析: 
+
+- 根据示例项目, 找到  rest.MustNewServer(c.RestConf)
+
+
+#### 3.1 rest.MustNewServer
+
+- 代码位置: 
+    - go-zero/rest/server.go#MustNewServer()
+
+
+#### 3.2 engine.AddRoutes():
+
+- 注册路由表+handler
+- 代码位置:
+    - go-zero/rest/server.go.Server().AddRoutes()
+
+- 路由: 
+    - go-zero/rest/router/patrouter.go:34
+    
+    
+- 路由表定义位置: 
+    - go-zero/rest/types.go:12
+
+
+#### 3.3 engine.Start():
 
 
 
-## core: 
+- start() 比较妙的地方: 
+    - router 类型, 扩展的 interface. 
+    
+    
+- go-zero/rest/engine.go:75
+
+
+## ref:
+
+### zrpc: 
+
+- https://www.yuque.com/tal-tech/go-zero/rslrhx
+- 这个是 grpc 的扩展, so, 那就好理解了. 
+
+
+
 
 
 

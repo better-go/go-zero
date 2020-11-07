@@ -21,22 +21,35 @@ const topCpuUsage = 1000
 
 var ErrSignatureConfig = errors.New("bad config for Signature")
 
+//
+// todo x: 框架引擎对象:
+//
 type engine struct {
-	conf                 RestConf
-	routes               []featuredRoutes
-	unauthorizedCallback handler.UnauthorizedCallback
+	conf                 RestConf                     // todo x: 配置
+	routes               []featuredRoutes             // 路由
+	unauthorizedCallback handler.UnauthorizedCallback //
 	unsignedCallback     handler.UnsignedCallback
-	middlewares          []Middleware
-	shedder              load.Shedder
-	priorityShedder      load.Shedder
+	middlewares          []Middleware // todo x: 中间件插件列表
+	shedder              load.Shedder //
+	priorityShedder      load.Shedder //
 }
 
+//
+//
+//
 func newEngine(c RestConf) *engine {
 	srv := &engine{
 		conf: c,
 	}
+
+	// todo x: 用来做降载, default=900, range=[0:1000]
 	if c.CpuThreshold > 0 {
+		//
+		// todo x:
+		//
 		srv.shedder = load.NewAdaptiveShedder(load.WithCpuThreshold(c.CpuThreshold))
+		//
+		//
 		srv.priorityShedder = load.NewAdaptiveShedder(load.WithCpuThreshold(
 			(c.CpuThreshold + topCpuUsage) >> 1))
 	}
@@ -56,11 +69,31 @@ func (s *engine) SetUnsignedCallback(callback handler.UnsignedCallback) {
 	s.unsignedCallback = callback
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// todo x: 启动 http + 路由
+//
 func (s *engine) Start() error {
+
+	//
+	// todo x: 特别注意
+	//		- 1. router.NewRouter()
+	//			- 返回值类型是: httpx.Router, 这是扩展的 	http.Handler interface 类型
+	//			- 这个是很妙的地方. 要 follow 这条线.
+	//
 	return s.StartWithRouter(router.NewRouter())
 }
 
+//
+// todo: 启动路由, 自动 http/https
+//		- 接上, 注意参数类型(interface 类型)
+//
 func (s *engine) StartWithRouter(router httpx.Router) error {
+	//
+	// todo x: 1. 路由绑定
+	//		- 注意内部一些实现细节
+	//
 	if err := s.bindRoutes(router); err != nil {
 		return err
 	}
@@ -71,6 +104,8 @@ func (s *engine) StartWithRouter(router httpx.Router) error {
 
 	return internal.StartHttps(s.conf.Host, s.conf.Port, s.conf.CertFile, s.conf.KeyFile, router)
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func (s *engine) appendAuthHandler(fr featuredRoutes, chain alice.Chain,
 	verifier func(alice.Chain) alice.Chain) alice.Chain {
@@ -103,9 +138,19 @@ func (s *engine) bindFeaturedRoutes(router httpx.Router, fr featuredRoutes, metr
 	return nil
 }
 
+
+//
+// todo x: supper awesome here!
+//
 func (s *engine) bindRoute(fr featuredRoutes, router httpx.Router, metrics *stat.Metrics,
 	route Route, verifier func(chain alice.Chain) alice.Chain) error {
+	//
+	// todo x: 这里初始化了一堆有用的中间件
+	//
 	chain := alice.New(
+		//
+		// todo x
+		//
 		handler.TracingHandler,
 		s.getLogHandler(),
 		handler.MaxConns(s.conf.MaxConns),
@@ -114,10 +159,17 @@ func (s *engine) bindRoute(fr featuredRoutes, router httpx.Router, metrics *stat
 		handler.TimeoutHandler(time.Duration(s.conf.Timeout)*time.Millisecond),
 		handler.RecoverHandler,
 		handler.MetricHandler(metrics),
+		//
+		// todo x:
+		//
 		handler.PromethousHandler(route.Path),
 		handler.MaxBytesHandler(s.conf.MaxBytes),
 		handler.GunzipHandler,
 	)
+
+	//
+	//
+	//
 	chain = s.appendAuthHandler(fr, chain, verifier)
 
 	for _, middleware := range s.middlewares {

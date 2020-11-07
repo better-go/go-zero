@@ -24,6 +24,11 @@ type (
 	}
 )
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// todo x: 创建 http server
+//
 func MustNewServer(c RestConf, opts ...RunOption) *Server {
 	engine, err := NewServer(c, opts...)
 	if err != nil {
@@ -38,19 +43,28 @@ func NewServer(c RestConf, opts ...RunOption) (*Server, error) {
 		return nil, errors.New("only one RunOption is allowed")
 	}
 
+	// todo x: 1. 基本初始化, 启用 prometheus 监控等
 	if err := c.SetUp(); err != nil {
 		return nil, err
 	}
 
+	// todo x: 2. server 对象
 	server := &Server{
+		//
+		//
+		//
 		ngin: newEngine(c),
 		opts: runOptions{
 			start: func(srv *engine) error {
+				//
+				// todo x: 3. 服务启动方法
+				//
 				return srv.Start()
 			},
 		},
 	}
 
+	// todo x: 标准做法, 更新配置参数
 	for _, opt := range opts {
 		opt(server)
 	}
@@ -58,6 +72,12 @@ func NewServer(c RestConf, opts ...RunOption) (*Server, error) {
 	return server, nil
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// todo x: 路由注册:
+//		- 特别注意: 参数
+//
 func (e *Server) AddRoutes(rs []Route, opts ...RouteOption) {
 	r := featuredRoutes{
 		routes: rs,
@@ -71,6 +91,8 @@ func (e *Server) AddRoutes(rs []Route, opts ...RouteOption) {
 func (e *Server) AddRoute(r Route, opts ...RouteOption) {
 	e.AddRoutes([]Route{r}, opts...)
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func (e *Server) Start() {
 	handleError(e.opts.start(e.ngin))
@@ -131,12 +153,19 @@ func WithMiddleware(middleware Middleware, rs ...Route) []Route {
 	return routes
 }
 
+//
+//
+//
 func WithNotFoundHandler(handler http.Handler) RunOption {
 	rt := router.NewRouter()
 	rt.SetNotFoundHandler(handler)
 	return WithRouter(rt)
 }
 
+
+//
+//
+//
 func WithNotAllowedHandler(handler http.Handler) RunOption {
 	rt := router.NewRouter()
 	rt.SetNotAllowedHandler(handler)
@@ -149,6 +178,9 @@ func WithPriority() RouteOption {
 	}
 }
 
+//
+// todo x: 路由注册写法, 标准做法
+//
 func WithRouter(router httpx.Router) RunOption {
 	return func(server *Server) {
 		server.opts.start = func(srv *engine) error {

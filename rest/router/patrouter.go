@@ -27,6 +27,10 @@ type patRouter struct {
 	notAllowed http.Handler
 }
 
+//
+// todo x: 路由树, map + tree 结构
+//		- 注意返回值类型, 是扩展的 `http.Handler` interface 类型
+//
 func NewRouter() httpx.Router {
 	return &patRouter{
 		trees: make(map[string]*search.Tree),
