@@ -93,8 +93,15 @@ goctl api new greet
     - go-zero/rest/types.go:12
 
 
+
 #### 3.3 engine.Start():
 
+- 调用链:
+    - engine.Start()
+        - StartWithRouter()  // 关键
+            - bindRoutes()
+                - bindFeaturedRoutes()
+                    - bindRoute() // 注意 ! ! ! 关键代码, 内部集成很多插件
 
 
 - start() 比较妙的地方: 
@@ -102,6 +109,28 @@ goctl api new greet
     
     
 - go-zero/rest/engine.go:75
+
+
+#### engine.bindRoute():
+
+- 请特别深入阅读这个方法! 重要事情说3遍!
+- 请特别深入阅读这个方法! 重要事情说3遍!
+- 请特别深入阅读这个方法! 重要事情说3遍!
+
+> 内部实现: 做了什么, 怎么实现的. 
+
+- 特别值得学习. 
+- 代码位置: 
+    - go-zero/rest/engine.go:157
+
+
+#### StartHttp():
+
+
+- go-zero/rest/internal/starter.go
+- 启动 HTTP server
+- 支持优雅退出
+- 基于 go.14 官方 shutdown() 实现
 
 
 ## ref:

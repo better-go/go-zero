@@ -41,6 +41,9 @@ func (sg *ServiceGroup) Add(service Service) {
 // There should not be any logic code after calling this method, because this method is a blocking one.
 // Also, quitting this method will close the logx output.
 func (sg *ServiceGroup) Start() {
+	//
+	// todo x: 这是非常关键的代码! ! !
+	//
 	proc.AddShutdownListener(func() {
 		log.Println("Shutting down...")
 		sg.stopOnce()

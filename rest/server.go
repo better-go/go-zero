@@ -102,9 +102,17 @@ func (e *Server) Stop() {
 	logx.Close()
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// todo x: 自定义插件 hook 口子, 用于进一步扩展, 标准做法
+//
 func (e *Server) Use(middleware Middleware) {
 	e.ngin.use(middleware)
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 func ToMiddleware(handler func(next http.Handler) http.Handler) Middleware {
 	return func(handle http.HandlerFunc) http.HandlerFunc {

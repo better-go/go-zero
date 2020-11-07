@@ -66,9 +66,18 @@ func (s *rpcServer) Start(register RegisterFn) error {
 		WithStreamServerInterceptors(streamInterceptors...))
 	server := grpc.NewServer(options...)
 	register(server)
+
+	//
+	// todo x: 注意 优雅退出机制
+	//
+
+
 	// we need to make sure all others are wrapped up
 	// so we do graceful stop at shutdown phase instead of wrap up phase
 	shutdownCalled := proc.AddShutdownListener(func() {
+		//
+		// todo x:
+		//
 		server.GracefulStop()
 	})
 	err = server.Serve(lis)

@@ -34,6 +34,10 @@ func init() {
 	timingWheel, err = collection.NewTimingWheel(time.Second, timingWheelSlots, clean)
 	logx.Must(err)
 
+
+	//
+	// todo x:
+	//
 	proc.AddShutdownListener(func() {
 		timingWheel.Drain(clean)
 	})

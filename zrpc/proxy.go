@@ -10,6 +10,9 @@ import (
 	"google.golang.org/grpc"
 )
 
+//
+// todo x: go rpc 内网服务间鉴权 - 权限控制
+//
 type RpcProxy struct {
 	backend     string
 	clients     map[string]Client
@@ -30,6 +33,10 @@ func NewProxy(backend string, opts ...internal.ClientOption) *RpcProxy {
 func (p *RpcProxy) TakeConn(ctx context.Context) (*grpc.ClientConn, error) {
 	cred := auth.ParseCredential(ctx)
 	key := cred.App + "/" + cred.Token
+
+	//
+	//
+	//
 	val, err := p.sharedCalls.Do(key, func() (interface{}, error) {
 		p.lock.Lock()
 		client, ok := p.clients[key]
@@ -38,6 +45,10 @@ func (p *RpcProxy) TakeConn(ctx context.Context) (*grpc.ClientConn, error) {
 			return client, nil
 		}
 
+
+		//
+		// todo x: gRPC
+		//
 		opts := append(p.options, WithDialOption(grpc.WithPerRPCCredentials(&auth.Credential{
 			App:   cred.App,
 			Token: cred.Token,
