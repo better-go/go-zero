@@ -175,15 +175,18 @@ http server 是在 start() 的时候, 把  srv.shutdown() 方法 植入 到 list
 
 ## ref:
 
+
+
+### cache/ crud 等代码自动生成: 
+
+- https://www.yuque.com/tal-tech/go-zero/rm435c
+
+
+
 ### zrpc: 
 
 - https://www.yuque.com/tal-tech/go-zero/rslrhx
 - 这个是 grpc 的扩展, so, 那就好理解了. 
-
-
-
-
-
 
 
 
